@@ -1,11 +1,7 @@
 import os
 from os.path import join, dirname
 
-from dotenv import load_dotenv
-
-# .envファイルから環境変数を読み込む
-load_dotenv(join(dirname(__file__), '.env'))
-
+# 環境変数からdiscord bot tokenを読み込む
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
 COMMAND_PREFIX = '!'

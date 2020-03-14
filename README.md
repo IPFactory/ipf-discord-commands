@@ -13,16 +13,10 @@ botは以下の手順で起動する.
 
 ### 環境変数の設定
 
-`.env`という名前のファイルを作成し,内容を以下のように編集する.
-
-```
-BOT_TOKEN=<discord bot token>
-```
-
-[.env.sample](./.env.sample)をコピーすると右辺だけ編集すれば済む.
+環境変数BOT_TOKENの値にdiscord bot tokenを設定する。.
 
 ```shell-session
-$ cp .env.sample .env
+BOT_TOKEN=<discord bot token>
 ```
 
 ### 起動  
