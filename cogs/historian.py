@@ -57,7 +57,7 @@ class Historian(commands.Cog):
               'タイトルを指定した場合,Markdownの大見出しにその文字列が設定される.\n')
     )
     async def channel(self, ctx, id_a: int = None, id_b: int = None, title: str = ''):
-        if id_a == id_b is None:
+        if id_a is None or id_b is None:
             await ctx.send(f'引数が足りません. (詳細は`!help historian {sys._getframe().f_code.co_name}`で確認できます.)')
             return
 
