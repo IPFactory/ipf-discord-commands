@@ -26,8 +26,8 @@ def _to_md(self) -> str:
 def messages_to_mdstr(messages: list, title: str) -> str:
     history = '\n'.join([m.to_md() for m in filter(lambda m: not m.author.bot, messages)])
 
-    author_dict = dict(Counter([m.author for m in messages]).most_common())
-    participants = '\n'.join([f'- {user}' for user in author_dict])
+    author_and_msg_count = dict(Counter([m.author for m in filter(lambda m: not m.author.bot, messages)]).most_common())
+    participants = '\n'.join([f'- {user}' for user in author_and_msg_count])
 
     return '\n\n'.join([f'# {title}', '## 参加者(登場人物)', participants, '## 会話ログ', history])
 
