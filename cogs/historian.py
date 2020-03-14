@@ -94,6 +94,13 @@ class Historian(commands.Cog):
         except Exception:
             await ctx.send('エラーが発生しました.')
 
+    @channel.error
+    async def channel_error(self, ctx, error):
+        if isinstance(error, discord.ext.commands.BadArgument):
+            await ctx.send('引数の値が不正です. (詳細は!help historian channelで確認できます.)')
+        else:
+            raise error
+
 
 def setup(bot):
     bot.add_cog(Historian(bot))
