@@ -97,7 +97,7 @@ class Historian(commands.Cog):
     @channel.error
     async def channel_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.BadArgument):
-            await ctx.send('引数の値が不正です. (詳細は!help historian channelで確認できます.)')
+            await ctx.send(f'引数の値が不正です. (詳細は`!help historian {sys._getframe().f_code.co_name[:-6]}`)')
         else:
             raise error
 
