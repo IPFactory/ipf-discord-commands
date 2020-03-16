@@ -51,15 +51,19 @@ class Historian(commands.Cog):
     @historian.command(
         name='channel',
         aliases=['c'],
-        usage='<先頭メッセージID> <末尾メッセージID> (<タイトル>)',
+        usage='<先頭メッセージID> (<末尾メッセージID>) (<タイトル>)',
         help=('コマンドを実行したチャンネルの会話ログを抜粋する.\n'
               '先頭のメッセージIDと末尾のメッセージIDを指定することで,その範囲のログを切り出したMarkdownが生成される.\n'
+              '末尾のメッセージIDを省略した場合,先頭メッセージIDから最新のメッセージまでを切り出す.'
               'タイトルを指定した場合,Markdownの大見出しにその文字列が設定される.\n')
     )
     async def channel(self, ctx, id_a: int = None, id_b: int = None, title: str = ''):
-        if id_a is None or id_b is None:
+        if id_a is None:
             await ctx.send(f'引数が足りません. (詳細は`!help historian {sys._getframe().f_code.co_name}`で確認できます.)')
             return
+
+        if id_b is None:
+            id_b = ctx.channel.last_message_id
 
         try:
             msg_a = await ctx.fetch_message(id_a)
