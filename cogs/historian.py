@@ -18,8 +18,10 @@ def _to_md(self) -> str:
     message_url = self.jump_url
     author = self.author
     content = self.content
+    attachments = '\n'.join([f'![{a.filename}]({a.url})' for a in self.attachments])
     edited = "**(編集済み)**" if self.edited_at is not None else ""
-    return f'- **[{created_at}]({message_url}) {author}**: {content} {edited}'
+    return (f'- **[{created_at}]({message_url}) {author}**: {content} {edited}\n'
+            f'{attachments}')
 
 
 # discord.MessageのリストからMarkdown文字列を生成する.
