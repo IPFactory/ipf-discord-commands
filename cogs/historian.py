@@ -54,7 +54,7 @@ class Historian(commands.Cog):
         usage='<先頭メッセージID> (<末尾メッセージID>) (<タイトル>)',
         help=('コマンドを実行したチャンネルの会話ログを抜粋する.\n'
               '先頭のメッセージIDと末尾のメッセージIDを指定することで,その範囲のログを切り出したMarkdownが生成される.\n'
-              '末尾のメッセージIDを省略した場合,先頭メッセージIDから最新のメッセージまでを切り出す.'
+              '末尾のメッセージIDを省略した場合,先頭メッセージIDから最新のメッセージまでを切り出す.\n'
               'タイトルを指定した場合,Markdownの大見出しにその文字列が設定される.\n')
     )
     async def channel(self, ctx, id_a: int = None, id_b: int = None, title: str = ''):
