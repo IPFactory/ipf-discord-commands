@@ -17,7 +17,7 @@ def _to_md(self) -> str:
     created_at = self.created_at.strftime("%Y/%m/%d %H:%M:%S")
     message_url = self.jump_url
     author = self.author
-    content = self.content
+    content = self.clean_content
     attachments = '\n'.join([f'![{a.filename}]({a.url})' for a in self.attachments])
     edited = "**(編集済み)**" if self.edited_at is not None else ""
     return (f'- **[{created_at}]({message_url}) {author}**: {content} {edited}\n'
