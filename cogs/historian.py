@@ -19,7 +19,7 @@ def _to_md(self) -> str:
     author = self.author
     content = self.clean_content
     attachments = '\n'.join([f'![{a.filename}]({a.url})' for a in self.attachments])
-    edited = "**(編集済み)**" if self.edited_at is not None else ""
+    edited = "**(編集済)**" if self.edited_at is not None else ""
     return (f'- **[{created_at}]({message_url}) {author}**: {content} {edited}\n'
             f'{attachments}')
 
