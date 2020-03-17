@@ -14,7 +14,7 @@ import constants
 
 # discord.Messageをマークダウンに変換する.(discord.Messageのクラスメソッドとして登録する.)
 def _to_md(self) -> str:
-    created_at = self.created_at.strftime("%Y/%m/%d %H:%M:%S")
+    created_at = f'{(self.created_at + timedelta(hours=9)).strftime("%Y/%m/%d %H:%M:%S")}(+09:00)'
     message_url = self.jump_url
     author = self.author
     content = self.clean_content
