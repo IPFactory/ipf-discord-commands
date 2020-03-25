@@ -54,11 +54,11 @@ class Historian(commands.Cog):
         name='channel',
         aliases=['c'],
         usage='<サブコマンド>',
-        help='チャンネル内の会話ログを抜粋する'
+        help='チャンネル内の会話ログを抜粋する',
+        invoke_without_command=True
     )
-    async def channel(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await ctx.send(f'サブコマンドが指定されていません. (詳細は`!help {self.channel}`で確認できます.)')
+    async def channel(self, ctx, id_a: int = None, id_b: int = None, title: str = ''):
+        await self.cut(ctx, id_a, id_b, title)
 
     @channel.command(
         name='cut',
