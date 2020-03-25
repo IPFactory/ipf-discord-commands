@@ -114,6 +114,51 @@ class Historian(commands.Cog):
         else:
             raise error
 
+    @channel.command(
+        name='pick',
+        aliases=['ids', 'p'],
+        usage='<メッセージID...>',
+        help=('複数のメッセージIDを指定すると、それらをピックアップしてMarkdownを生成する.\n'
+              'タイトルは指定できない.\n')
+    )
+    async def pick(self, ctx, *ids: int):
+        if len(ids) < 1:
+            await ctx.send(f'メッセージIDが指定されていません. (詳細は`!help {self.pick}`で確認できます.)')
+            return
+
+        try:
+            messages = [await ctx.fetch_message(id) for id in ids]
+            messages.sort(key=lambda m: m.created_at)
+
+            MD_STR = messages_to_mdstr(messages, f'{len(ids)}件のメッセージ')
+
+            MD_FILE_NAME = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
+            MD_FILE_PATH = join(constants.MD_DIR, MD_FILE_NAME)
+            with open(MD_FILE_PATH, mode='w', encoding='UTF-8') as f:
+                f.write(MD_STR)
+
+            await ctx.send(file=discord.File(f'{MD_FILE_PATH}'))
+            os.remove(MD_FILE_PATH)
+
+        except discord.NotFound:
+            await ctx.send('存在しないIDが含まれています.')
+
+        except discord.Forbidden:
+            await ctx.send('この機能を利用する権限がありません.')
+
+        except discord.HTTPException as e:
+            await ctx.send(e)
+
+        except Exception:
+            await ctx.send('エラーが発生しました.')
+
+    @pick.error
+    async def pick_error(self, ctx, error):
+        if isinstance(error, discord.ext.commands.BadArgument):
+            await ctx.send(f'引数の値が不正です. (詳細は`!help {self.pick}`で確認できます。)')
+        else:
+            raise error
+
     # 先頭と末尾の時刻を指定すると、その範囲内に投稿されたログを抽出する.
     async def _extractMessagesInRange(self, ctx, since: datetime, until: datetime) -> List[discord.Message]:
         since -= timedelta(milliseconds=1)
