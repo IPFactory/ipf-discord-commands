@@ -87,7 +87,7 @@ class Historian(commands.Cog):
             until_str = until.strftime("%Y-%m-%d %H:%M")
             MD_STR = messages_to_mdstr(messages, title if title != '' else f'{since_str}~{until_str}')
 
-            await self.sendMDFile(ctx, MD_STR)
+            await self.send_md_file(ctx, MD_STR)
 
         except discord.NotFound:
             await ctx.send('指定したIDのメッセージIDが見つかりませんでした.')
@@ -126,7 +126,7 @@ class Historian(commands.Cog):
             messages.sort(key=lambda m: m.created_at)
 
             MD_STR = messages_to_mdstr(messages, f'{len(ids)}件のメッセージ')
-            await self.sendMDFile(ctx, MD_STR)
+            await self.send_md_file(ctx, MD_STR)
 
         except discord.NotFound:
             await ctx.send('存在しないIDが含まれています.')
@@ -154,7 +154,7 @@ class Historian(commands.Cog):
         return await ctx.history(after=since, before=until).flatten()
 
     # 引数に与えたMarkdown文字列をファイルに書き出して、Discord側で送信する.
-    async def sendMDFile(self, ctx, mdstr: str):
+    async def send_md_file(self, ctx, mdstr: str):
         filename = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
         filepath = join(constants.MD_DIR, filename)
         with open(filepath, mode='w', encoding='UTF-8') as f:
