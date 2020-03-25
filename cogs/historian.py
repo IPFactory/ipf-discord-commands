@@ -154,13 +154,13 @@ class Historian(commands.Cog):
 
     # 引数に与えたMarkdown文字列をファイルに書き出して、Discord側で送信する.
     async def sendMDFile(self, ctx, mdstr: str):
-        MD_FILE_NAME = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
-        MD_FILE_PATH = join(constants.MD_DIR, MD_FILE_NAME)
-        with open(MD_FILE_PATH, mode='w', encoding='UTF-8') as f:
+        filename = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
+        filepath = join(constants.MD_DIR, filename)
+        with open(filepath, mode='w', encoding='UTF-8') as f:
             f.write(mdstr)
 
-        await ctx.send(file=discord.File(f'{MD_FILE_PATH}'))
-        os.remove(MD_FILE_PATH)
+        await ctx.send(file=discord.File(f'{filepath}'))
+        os.remove(filepath)
 
 def setup(bot):
     bot.add_cog(Historian(bot))
