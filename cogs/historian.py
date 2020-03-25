@@ -163,5 +163,6 @@ class Historian(commands.Cog):
         await ctx.send(file=discord.File(f'{filepath}'))
         os.remove(filepath)
 
+
 def setup(bot):
     bot.add_cog(Historian(bot))
