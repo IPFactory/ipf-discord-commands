@@ -75,13 +75,12 @@ class Historian(commands.Cog):
             since, until = sorted([msg_a.created_at, msg_b.created_at])
             messages = await self._extractMessagesInRange(ctx, since, until)
 
-            MD_FILE_NAME = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
-            MD_FILE_PATH = join(constants.MD_DIR, MD_FILE_NAME)
-
             since_str = since.strftime("%Y-%m-%d %H:%M")
             until_str = until.strftime("%Y-%m-%d %H:%M")
             MD_STR = messages_to_mdstr(messages, title if title != '' else f'{since_str}~{until_str}')
 
+            MD_FILE_NAME = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
+            MD_FILE_PATH = join(constants.MD_DIR, MD_FILE_NAME)
             with open(MD_FILE_PATH, mode='w', encoding='UTF-8') as f:
                 f.write(MD_STR)
 
