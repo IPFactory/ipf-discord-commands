@@ -1,7 +1,6 @@
 import os
 import random
 import string
-import sys
 from collections import Counter
 from datetime import datetime, timedelta
 from os.path import join
@@ -49,7 +48,7 @@ class Historian(commands.Cog):
     )
     async def historian(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.send(f'サブコマンドが指定されていません. (詳細は`!help {sys._getframe().f_code.co_name}`で確認できます.)')
+            await ctx.send(f'サブコマンドが指定されていません. (詳細は`!help {self.historian}`で確認できます.)')
 
     @historian.group(
         name='channel',
@@ -59,7 +58,7 @@ class Historian(commands.Cog):
     )
     async def channel(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.send(f'サブコマンドが指定されていません. (詳細は`!help {sys._getframe().f_code.co_name}`で確認できます.)')
+            await ctx.send(f'サブコマンドが指定されていません. (詳細は`!help {self.channel}`で確認できます.)')
 
     @channel.command(
         name='cut',
@@ -112,7 +111,7 @@ class Historian(commands.Cog):
     @cut.error
     async def cut_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.BadArgument):
-            await ctx.send(f'引数の値が不正です. (詳細は`!help historian {sys._getframe().f_code.co_name[:-6]}`で確認できます。)')
+            await ctx.send(f'引数の値が不正です. (詳細は`!help {self.cut}`で確認できます。)')
         else:
             raise error
 
