@@ -3,8 +3,9 @@ import random
 import string
 import sys
 from collections import Counter
-from datetime import timedelta
+from datetime import datetime, timedelta
 from os.path import join
+from typing import List
 
 import discord
 from discord.ext import commands
@@ -72,10 +73,7 @@ class Historian(commands.Cog):
             msg_b = await ctx.fetch_message(id_b)
 
             since, until = sorted([msg_a.created_at, msg_b.created_at])
-            since -= timedelta(milliseconds=1)
-            until += timedelta(milliseconds=1)
-
-            messages = await ctx.history(after=since, before=until).flatten()
+            messages = await self._extractMessagesInRange(ctx, since, until)
 
             MD_FILE_NAME = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
             MD_FILE_PATH = join(constants.MD_DIR, MD_FILE_NAME)
@@ -108,6 +106,12 @@ class Historian(commands.Cog):
             await ctx.send(f'引数の値が不正です. (詳細は`!help historian {sys._getframe().f_code.co_name[:-6]}`で確認できます。)')
         else:
             raise error
+
+    # 先頭と末尾の時刻を指定すると、その範囲内に投稿されたログを抽出する.
+    async def _extractMessagesInRange(self, ctx, since: datetime, until: datetime) -> List[discord.Message]:
+        since -= timedelta(milliseconds=1)
+        until += timedelta(milliseconds=1)
+        return await ctx.history(after=since, before=until).flatten()
 
 
 def setup(bot):
