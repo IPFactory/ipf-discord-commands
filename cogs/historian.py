@@ -54,6 +54,8 @@ class Historian(commands.Cog):
     @historian.group(
         name='channel',
         aliases=['c'],
+        usage='<サブコマンド>',
+        help='チャンネル内の会話ログを抜粋する'
     )
     async def channel(self, ctx):
         if ctx.invoked_subcommand is None:
