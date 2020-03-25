@@ -113,7 +113,8 @@ class Historian(commands.Cog):
         aliases=['ids', 'p'],
         usage='<メッセージID...>',
         help=('複数のメッセージIDを指定すると、それらをピックアップしてMarkdownを生成する.\n'
-              'タイトルは指定できない.\n')
+              'なお,指定した複数のメッセージは時系列順にソートされる.\n'
+              'また,タイトルは指定できない.\n')
     )
     async def pick(self, ctx, *ids: int):
         if len(ids) < 1:
