@@ -51,16 +51,24 @@ class Historian(commands.Cog):
         if ctx.invoked_subcommand is None:
             await ctx.send(f'サブコマンドが指定されていません. (詳細は`!help {sys._getframe().f_code.co_name}`で確認できます.)')
 
-    @historian.command(
+    @historian.group(
         name='channel',
         aliases=['c'],
+    )
+    async def channel(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send(f'サブコマンドが指定されていません. (詳細は`!help {sys._getframe().f_code.co_name}`で確認できます.)')
+
+    @channel.command(
+        name='cut',
+        aliases=['range', 'r'],  # rangeが予約語のため、エイリアスとして使えるようにした。
         usage='<先頭メッセージID> (<末尾メッセージID>) (<タイトル>)',
         help=('コマンドを実行したチャンネルの会話ログを抜粋する.\n'
               '先頭のメッセージIDと末尾のメッセージIDを指定することで,その範囲のログを切り出したMarkdownが生成される.\n'
               '末尾のメッセージIDを省略した場合,先頭メッセージIDから最新のメッセージまでを切り出す.\n'
               'タイトルを指定した場合,Markdownの大見出しにその文字列が設定される.\n')
     )
-    async def channel(self, ctx, id_a: int = None, id_b: int = None, title: str = ''):
+    async def cut(self, ctx, id_a: int = None, id_b: int = None, title: str = ''):
         if id_a is None:
             await ctx.send(f'引数が足りません. (詳細は`!help historian {sys._getframe().f_code.co_name}`で確認できます.)')
             return
@@ -99,8 +107,8 @@ class Historian(commands.Cog):
         except Exception:
             await ctx.send('エラーが発生しました.')
 
-    @channel.error
-    async def channel_error(self, ctx, error):
+    @cut.error
+    async def cut_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.BadArgument):
             await ctx.send(f'引数の値が不正です. (詳細は`!help historian {sys._getframe().f_code.co_name[:-6]}`で確認できます。)')
         else:
