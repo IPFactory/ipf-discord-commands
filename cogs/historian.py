@@ -87,13 +87,7 @@ class Historian(commands.Cog):
             until_str = until.strftime("%Y-%m-%d %H:%M")
             MD_STR = messages_to_mdstr(messages, title if title != '' else f'{since_str}~{until_str}')
 
-            MD_FILE_NAME = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
-            MD_FILE_PATH = join(constants.MD_DIR, MD_FILE_NAME)
-            with open(MD_FILE_PATH, mode='w', encoding='UTF-8') as f:
-                f.write(MD_STR)
-
-            await ctx.send(file=discord.File(f'{MD_FILE_PATH}'))
-            os.remove(MD_FILE_PATH)
+            await self.sendMDFile(ctx, MD_STR)
 
         except discord.NotFound:
             await ctx.send('指定したIDのメッセージIDが見つかりませんでした.')
@@ -131,14 +125,7 @@ class Historian(commands.Cog):
             messages.sort(key=lambda m: m.created_at)
 
             MD_STR = messages_to_mdstr(messages, f'{len(ids)}件のメッセージ')
-
-            MD_FILE_NAME = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
-            MD_FILE_PATH = join(constants.MD_DIR, MD_FILE_NAME)
-            with open(MD_FILE_PATH, mode='w', encoding='UTF-8') as f:
-                f.write(MD_STR)
-
-            await ctx.send(file=discord.File(f'{MD_FILE_PATH}'))
-            os.remove(MD_FILE_PATH)
+            await self.sendMDFile(ctx, MD_STR)
 
         except discord.NotFound:
             await ctx.send('存在しないIDが含まれています.')
@@ -165,6 +152,15 @@ class Historian(commands.Cog):
         until += timedelta(milliseconds=1)
         return await ctx.history(after=since, before=until).flatten()
 
+    # 引数に与えたMarkdown文字列をファイルに書き出して、Discord側で送信する.
+    async def sendMDFile(self, ctx, mdstr: str):
+        MD_FILE_NAME = f'{"".join([random.choice(string.ascii_letters + string.digits) for _ in range(20)])}.md'
+        MD_FILE_PATH = join(constants.MD_DIR, MD_FILE_NAME)
+        with open(MD_FILE_PATH, mode='w', encoding='UTF-8') as f:
+            f.write(mdstr)
+
+        await ctx.send(file=discord.File(f'{MD_FILE_PATH}'))
+        os.remove(MD_FILE_PATH)
 
 def setup(bot):
     bot.add_cog(Historian(bot))
