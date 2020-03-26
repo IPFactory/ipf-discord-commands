@@ -18,7 +18,7 @@ def _to_md(self) -> str:
     created_at = f'{(self.created_at + timedelta(hours=9)).strftime("%Y/%m/%d %H:%M")}(+09:00)'
     message_url = self.jump_url
     author = self.author
-    content = render_custom_emoji(self.clean_content)
+    content = refine_message_content(self.clean_content)
     attachments = '\n'.join([f'![{a.filename}]({a.url})' for a in self.attachments])
     edited = "**(編集済)**" if self.edited_at is not None else ""
     return (f'- **[{created_at}]({message_url}) {author}**: {content} {edited}\n'
@@ -35,10 +35,27 @@ def messages_to_mdstr(messages: list, title: str) -> str:
     return '\n\n'.join([f'# {title}', '## 参加者(登場人物)', participants, '## 会話ログ', history])
 
 
+# メッセージの内容を読みやすい形に修正する.
+def refine_message_content(message: str) -> str:
+    refined = message
+    refined = render_custom_emoji(refined)
+    refined = render_custom_anime_emoji(refined)
+    return refined
+
+
 # メッセージ内のカスタム絵文字を,キレイに表示できるように変換する.
 def render_custom_emoji(message: str) -> str:
     return re.sub(r'<:(?P<emoji_alias>\w+):(?P<emoji_id>\d{18})>',
                   r'<img src="https://cdn.discordapp.com/emojis/\g<emoji_id>.png?v=1" alt=":\g<emoji_alias>:" '
+                  r'style="width: 1em; height:1em;" draggable="false" />',
+                  message
+                  )
+
+
+# メッセージ内のカスタムアニメーション絵文字を,キレイに表示できるように変換する.
+def render_custom_anime_emoji(message: str) -> str:
+    return re.sub(r'<a:(?P<emoji_alias>\w+):(?P<emoji_id>\d{18})>',
+                  r'<img src="https://cdn.discordapp.com/emojis/\g<emoji_id>.gif?v=1" alt=":\g<emoji_alias>:" '
                   r'style="width: 1em; height:1em;" draggable="false" />',
                   message
                   )
