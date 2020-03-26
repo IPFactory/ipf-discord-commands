@@ -26,7 +26,7 @@ def _to_md(self) -> str:
 
 
 # discord.MessageのリストからMarkdown文字列を生成する.
-def messages_to_mdstr(messages: list, title: str) -> str:
+def messages_to_mdstr(messages: List[discord.Message], title: str) -> str:
     history = '\n'.join([m.to_md() for m in filter(lambda m: not m.author.bot, messages)])
 
     author_and_msg_count = dict(Counter([m.author for m in filter(lambda m: not m.author.bot, messages)]).most_common())
