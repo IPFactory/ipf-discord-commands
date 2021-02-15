@@ -178,7 +178,7 @@ class Historian(commands.Cog):
     async def _extractMessagesInRange(self, ctx, since: datetime, until: datetime) -> List[discord.Message]:
         since -= timedelta(milliseconds=1)
         until += timedelta(milliseconds=1)
-        return await ctx.history(after=since, before=until).flatten()
+        return await ctx.history(after=since, before=until, limit=100_000).flatten()
 
     # 引数に与えたMarkdown文字列をファイルに書き出して、Discord側で送信する.
     async def send_md_file(self, ctx, mdstr: str):
