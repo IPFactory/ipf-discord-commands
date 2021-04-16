@@ -11,8 +11,9 @@ class Nominator(commands.Cog):
 
     @commands.group(
         name='nominator',
-        usage='<指名する人の人数>',
-        help='サーバー・チャンネル',
+        usage='<[母集団に含めるべきユーザに付与されたロール...]...> <指名する人の人数>',
+        help=('指定したロールが付与されたメンバーから,指定された人数のメンバーをランダムに選び,メンションを飛ばす.\n'
+              'なお,ロールは複数個指定できる.\n'),
         invoke_without_command=True
     )
     async def nominator(self, ctx: commands.Context, *args):
