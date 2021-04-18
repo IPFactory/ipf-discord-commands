@@ -2,6 +2,7 @@ import os
 import traceback
 from os.path import isdir
 
+import discord
 from discord.ext import commands
 
 import constants
@@ -22,7 +23,12 @@ class JapaneseHelpCommand(commands.DefaultHelpCommand):
 
 class IPFCommandsBot(commands.Bot):
     def __init__(self, command_prefix):
-        super().__init__(command_prefix, help_command=JapaneseHelpCommand())
+        intents = discord.Intents.default()
+        intents.presences = True
+        intents.members = True
+        super().__init__(command_prefix,
+                         help_command=JapaneseHelpCommand(),
+                         intents=intents)
         for cog in constants.INITIAL_EXTENSIONS:
             try:
                 self.load_extension(cog)
