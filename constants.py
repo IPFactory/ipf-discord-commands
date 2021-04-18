@@ -1,3 +1,4 @@
+import os
 from os.path import dirname, join
 
 # 環境変数からdiscord bot tokenを読み込む
