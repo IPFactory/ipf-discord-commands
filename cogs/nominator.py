@@ -19,7 +19,8 @@ class Nominator(commands.Cog):
     async def nominator(self, ctx: commands.Context, *args):
         if not args:
             await ctx.send(f'引数を指定してください. (詳細は`!help {self.nominator}`で確認できます.)')
-            return
+
+        *target_roles, c = args
 
         try:
             c = int(c)
